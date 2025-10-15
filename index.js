@@ -80,31 +80,57 @@ function handlePostback(senderPsid, payload) {
   }
 }
 
-// ✅ Send welcome message when Get Started is clicked
 function sendWelcomeMessage(senderPsid) {
   const response = {
-    text: "👋 Welcome to Smartsheets! How can I help you today?",
-    quick_replies: [
-      {
-        content_type: "text",
-        title: "🛍️ Products",
-        payload: "PRODUCTS_PAYLOAD",
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "generic",
+        elements: [
+          {
+            title: "🛍️ Our Products",
+            subtitle: "Browse our latest products and offers!",
+            image_url: "https://via.placeholder.com/400x200?text=Products",
+            buttons: [
+              {
+                type: "postback",
+                title: "View Products",
+                payload: "PRODUCTS_PAYLOAD",
+              },
+            ],
+          },
+          {
+            title: "❓ FAQs",
+            subtitle: "Get answers to our most common questions.",
+            image_url: "https://via.placeholder.com/400x200?text=FAQs",
+            buttons: [
+              {
+                type: "postback",
+                title: "View FAQs",
+                payload: "FAQS_PAYLOAD",
+              },
+            ],
+          },
+          {
+            title: "📞 Contact Us",
+            subtitle: "We’d love to hear from you!",
+            image_url: "https://via.placeholder.com/400x200?text=Contact+Us",
+            buttons: [
+              {
+                type: "postback",
+                title: "Contact Support",
+                payload: "CONTACT_PAYLOAD",
+              },
+            ],
+          },
+        ],
       },
-      {
-        content_type: "text",
-        title: "❓ FAQs",
-        payload: "FAQS_PAYLOAD",
-      },
-      {
-        content_type: "text",
-        title: "📞 Contact Us",
-        payload: "CONTACT_PAYLOAD",
-      },
-    ],
+    },
   };
 
   callSendAPI(senderPsid, response);
 }
+
 
 // ✅ Helper function to send messages
 function callSendAPI(senderPsid, response) {
