@@ -6,8 +6,8 @@ const request = require("request");
 const app = express();
 app.use(bodyParser.json());
 
-const PAGE_ACCESS_TOKEN = "EAFY1TDcrAUsBPur9mnqBTraL5FMP7f6bZAEAYpkaZAOZBugqbkuNWbj1vJhV0FVsbJcVmMcvb96D5gYNCJRLZANIab7vAZBbNWj4GeG8smhWLIUg0zUmrHJZAf41UccjKJJY7srddw2BZBqK4BOUXRq3yIBSIHvcZAAMJO32dKAX8InWu6lZBmmuS1rvUNsB8iX6NTgDE3hqTVRPQk13nMOEXo79aTuJK9OX1ZBjLoHjXHeIkz"; 
 // ⚠️ Replace with your actual Page Access Token
+const PAGE_ACCESS_TOKEN = "EAFY1TDcrAUsBPur9mnqBTraL5FMP7f6bZAEAYpkaZAOZBugqbkuNWbj1vJhV0FVsbJcVmMcvb96D5gYNCJRLZANIab7vAZBbNWj4GeG8smhWLIUg0zUmrHJZAf41UccjKJJY7srddw2BZBqK4BOUXRq3yIBSIHvcZAAMJO32dKAX8InWu6lZBmmuS1rvUNsB8iX6NTgDE3hqTVRPQk13nMOEXo79aTuJK9OX1ZBjLoHjXHeIkz";
 
 // ✅ Root route
 app.get("/", (req, res) => {
@@ -16,8 +16,7 @@ app.get("/", (req, res) => {
 
 // ✅ Facebook Webhook Verification
 app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "mybot"; // ⚠️ Replace with your verify token
-
+  const VERIFY_TOKEN = "mybot"; // ⚠️ Replace with your own verify token
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
@@ -32,7 +31,7 @@ app.get("/webhook", (req, res) => {
   }
 });
 
-// ✅ Handle incoming messages & postbacks
+// ✅ Handle incoming webhook events
 app.post("/webhook", (req, res) => {
   const body = req.body;
 
@@ -47,33 +46,30 @@ app.post("/webhook", (req, res) => {
         handleMessage(senderPsid, webhookEvent.message);
       }
     });
+
     res.status(200).send("EVENT_RECEIVED");
   } else {
     res.sendStatus(404);
   }
 });
 
-// ✅ Handle user messages
+// ✅ Handle text messages
 function handleMessage(senderPsid, receivedMessage) {
-  let response;
-
   if (receivedMessage.text) {
-    response = {
+    const response = {
       text: "Thanks for messaging Smartsheets! 👋\nYou can type 'menu' anytime to see options again.",
     };
+    callSendAPI(senderPsid, response);
   }
-
-  callSendAPI(senderPsid, response);
 }
 
-// ✅ Handle button postbacks
+// ✅ Handle postback buttons
 function handlePostback(senderPsid, payload) {
   console.log("📩 Received postback payload:", payload);
 
   if (payload === "GET_STARTED_PAYLOAD") {
     console.log("🎯 Triggered GET_STARTED_PAYLOAD");
-    sendWelcomeMessage(senderPsid);
-
+    sendWelcomeCarousel(senderPsid);
   } else if (payload === "PRODUCTS_PAYLOAD") {
     callSendAPI(senderPsid, { text: "🛍️ Here are our products: ..." });
   } else if (payload === "FAQS_PAYLOAD") {
@@ -83,59 +79,76 @@ function handlePostback(senderPsid, payload) {
   }
 }
 
-// ✅ Send carousel welcome message
-function sendWelcomeMessage(senderPsid) {
-  const response = {
-    attachment: {
-      type: "template",
-      payload: {
-        template_type: "generic",
-        elements: [
-          {
-            title: "🛍️ Our Products",
-            subtitle: "Browse our latest products and offers!",
-            image_url: "https://via.placeholder.com/400x200?text=Products",
-            buttons: [
-              {
-                type: "postback",
-                title: "View Products",
-                payload: "PRODUCTS_PAYLOAD",
-              },
-            ],
-          },
-          {
-            title: "❓ FAQs",
-            subtitle: "Get answers to our most common questions.",
-            image_url: "https://via.placeholder.com/400x200?text=FAQs",
-            buttons: [
-              {
-                type: "postback",
-                title: "View FAQs",
-                payload: "FAQS_PAYLOAD",
-              },
-            ],
-          },
-          {
-            title: "📞 Contact Us",
-            subtitle: "We’d love to hear from you!",
-            image_url: "https://via.placeholder.com/400x200?text=Contact+Us",
-            buttons: [
-              {
-                type: "postback",
-                title: "Contact Support",
-                payload: "CONTACT_PAYLOAD",
-              },
-            ],
-          },
-        ],
+// ✅ Send carousel (generic template) when Get Started is clicked
+function sendWelcomeCarousel(senderPsid) {
+  const messageData = {
+    recipient: { id: senderPsid },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+            {
+              title: "🛍️ Our Products",
+              subtitle: "Browse our latest products and offers!",
+              image_url: "https://picsum.photos/400/200?random=1",
+              buttons: [
+                {
+                  type: "postback",
+                  title: "View Products",
+                  payload: "PRODUCTS_PAYLOAD",
+                },
+              ],
+            },
+            {
+              title: "❓ FAQs",
+              subtitle: "Get answers to our most common questions.",
+              image_url: "https://picsum.photos/400/200?random=2",
+              buttons: [
+                {
+                  type: "postback",
+                  title: "View FAQs",
+                  payload: "FAQS_PAYLOAD",
+                },
+              ],
+            },
+            {
+              title: "📞 Contact Us",
+              subtitle: "We’d love to hear from you!",
+              image_url: "https://picsum.photos/400/200?random=3",
+              buttons: [
+                {
+                  type: "postback",
+                  title: "Contact Support",
+                  payload: "CONTACT_PAYLOAD",
+                },
+              ],
+            },
+          ],
+        },
       },
     },
   };
 
-  callSendAPI(senderPsid, response);
+  request(
+    {
+      uri: "https://graph.facebook.com/v17.0/me/messages",
+      qs: { access_token: PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: messageData,
+    },
+    (err, res, body) => {
+      if (!err) {
+        console.log("✅ Carousel message sent!");
+      } else {
+        console.error("❌ Unable to send carousel:", err);
+      }
+    }
+  );
 }
 
-// ✅ Helper: Send message to Messenger API
+// ✅ Helper function to send normal messages
 function callSendAPI(senderPsid, response) {
   const requestBody = {
     recipient: { id: senderPsid },
@@ -153,15 +166,16 @@ function callSendAPI(senderPsid, response) {
       if (!err) {
         console.log("✅ Message sent!");
       } else {
-        console.error("❌ Unable to send message:" + err);
+        console.error("❌ Unable to send message:", err);
       }
     }
   );
 }
-// ✅ Serve privacy policy page
+
+// ✅ Serve privacy policy
 app.get("/privacy", (req, res) => {
   res.sendFile(__dirname + "/privacy.html");
 });
 
-// ✅ Start server
+// ✅ Start Express server
 app.listen(3000, () => console.log("🚀 Webhook is running on port 3000"));
