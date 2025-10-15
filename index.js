@@ -68,8 +68,12 @@ function handleMessage(senderPsid, receivedMessage) {
 
 // ✅ Handle button postbacks
 function handlePostback(senderPsid, payload) {
+  console.log("📩 Received postback payload:", payload);
+
   if (payload === "GET_STARTED_PAYLOAD") {
+    console.log("🎯 Triggered GET_STARTED_PAYLOAD");
     sendWelcomeMessage(senderPsid);
+
   } else if (payload === "PRODUCTS_PAYLOAD") {
     callSendAPI(senderPsid, { text: "🛍️ Here are our products: ..." });
   } else if (payload === "FAQS_PAYLOAD") {
