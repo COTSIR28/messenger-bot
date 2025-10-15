@@ -6,7 +6,8 @@ const request = require("request");
 const app = express();
 app.use(bodyParser.json());
 
-const PAGE_ACCESS_TOKEN = "EAFY1TDcrAUsBPur9mnqBTraL5FMP7f6bZAEAYpkaZAOZBugqbkuNWbj1vJhV0FVsbJcVmMcvb96D5gYNCJRLZANIab7vAZBbNWj4GeG8smhWLIUg0zUmrHJZAf41UccjKJJY7srddw2BZBqK4BOUXRq3yIBSIHvcZAAMJO32dKAX8InWu6lZBmmuS1rvUNsB8iX6NTgDE3hqTVRPQk13nMOEXo79aTuJK9OX1ZBjLoHjXHeIkz"; // ⚠️ replace with your actual Page Access Token
+const PAGE_ACCESS_TOKEN = "EAFY1TDcrAUsBPur9mnqBTraL5FMP7f6bZAEAYpkaZAOZBugqbkuNWbj1vJhV0FVsbJcVmMcvb96D5gYNCJRLZANIab7vAZBbNWj4GeG8smhWLIUg0zUmrHJZAf41UccjKJJY7srddw2BZBqK4BOUXRq3yIBSIHvcZAAMJO32dKAX8InWu6lZBmmuS1rvUNsB8iX6NTgDE3hqTVRPQk13nMOEXo79aTuJK9OX1ZBjLoHjXHeIkz"; 
+// ⚠️ Replace with your actual Page Access Token
 
 // ✅ Root route
 app.get("/", (req, res) => {
@@ -15,7 +16,7 @@ app.get("/", (req, res) => {
 
 // ✅ Facebook Webhook Verification
 app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "mybot"; // ⚠️ replace with your verify token
+  const VERIFY_TOKEN = "mybot"; // ⚠️ Replace with your verify token
 
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
@@ -40,7 +41,6 @@ app.post("/webhook", (req, res) => {
       const webhookEvent = entry.messaging[0];
       const senderPsid = webhookEvent.sender.id;
 
-      // Handle postbacks (buttons)
       if (webhookEvent.postback) {
         handlePostback(senderPsid, webhookEvent.postback.payload);
       } else if (webhookEvent.message) {
@@ -58,7 +58,6 @@ function handleMessage(senderPsid, receivedMessage) {
   let response;
 
   if (receivedMessage.text) {
-    // Simple fallback message
     response = {
       text: "Thanks for messaging Smartsheets! 👋\nYou can type 'menu' anytime to see options again.",
     };
@@ -80,6 +79,7 @@ function handlePostback(senderPsid, payload) {
   }
 }
 
+// ✅ Send carousel welcome message
 function sendWelcomeMessage(senderPsid) {
   const response = {
     attachment: {
@@ -131,8 +131,7 @@ function sendWelcomeMessage(senderPsid) {
   callSendAPI(senderPsid, response);
 }
 
-
-// ✅ Helper function to send messages
+// ✅ Helper: Send message to Messenger API
 function callSendAPI(senderPsid, response) {
   const requestBody = {
     recipient: { id: senderPsid },
@@ -156,4 +155,5 @@ function callSendAPI(senderPsid, response) {
   );
 }
 
+// ✅ Start server
 app.listen(3000, () => console.log("🚀 Webhook is running on port 3000"));
