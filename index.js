@@ -154,6 +154,10 @@ function callSendAPI(senderPsid, response) {
     }
   );
 }
+// ✅ Serve privacy policy page
+app.get("/privacy", (req, res) => {
+  res.sendFile(__dirname + "/privacy.html");
+});
 
 // ✅ Start server
 app.listen(3000, () => console.log("🚀 Webhook is running on port 3000"));
