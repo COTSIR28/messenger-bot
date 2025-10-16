@@ -92,7 +92,7 @@ function sendWelcomeCarousel(senderPsid) {
             {
               title: "🛍️ Our Products",
               subtitle: "Browse our latest products and offers!",
-              image_url: "https://picsum.photos/400/200?random=1",
+              image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/product1.jpg",
               buttons: [
                 {
                   type: "postback",
