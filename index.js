@@ -7,7 +7,7 @@ const app = express().use(bodyParser.json());
 
 // ===== CONFIG =====
 const VERIFY_TOKEN = "mybot"; // palitan mo ito
-const PAGE_ACCESS_TOKEN = "EAFY1TDcrAUsBPupllORIDjgZAvEFhZBdkBgVZB1oJg9o61ZAgNZBeiP4ktnH7YdqZCRQM7iMjnqUPctAzIGT2R0ZBL1oeDGd4Lh8mnQ6VZAqcYCy4Iedtsf5ZAhZAZBqZAL7gkZBWoZBVe1x2fMdhJWZAkhXeCm76K6DD7zmNFjzw2TyRk3aG6MggN1ZCDkYUMVCafa8SzWsXwMpNQZDZD"; // ilagay mo yung Page Access Token mo
+const PAGE_ACCESS_TOKEN = "EAFY1TDcrAUsBPupllORIDjgZAvEFhZBdkBgVZB1oJg9o61ZAgNZBeiP4ktnH7YdqZCRQM7iMjnqUPctAzIGT2R0ZBL1oeDGd4Lh8mnQ6VZAqcYCy4Iedtsf5ZAhZAZBqZAL7gkZBWoZBVe1x2fMdhJWZAkhXeCm76K6DD7zmNFjzw2TyRk3aG6MggN1ZCDkYUMVCafa8SzWsXwMpNQZDZD"; // ilagay mo dito ang Page Access Token mo
 
 // ===== VERIFY WEBHOOK =====
 app.get("/webhook", (req, res) => {
@@ -54,7 +54,17 @@ function handleMessage(senderPsid, receivedMessage) {
   let response;
 
   if (receivedMessage.text) {
-    response = { text: `You said: "${receivedMessage.text}" 😄` };
+    const text = receivedMessage.text.toLowerCase();
+
+    if (text.includes("products")) {
+      response = { text: "🛍️ We offer various products! (You can list them here.)" };
+    } else if (text.includes("faqs")) {
+      response = { text: "❓ Here are some frequently asked questions..." };
+    } else if (text.includes("contact")) {
+      response = { text: "📞 You can reach us at: example@email.com or 0912-345-6789." };
+    } else {
+      response = { text: `You said: "${receivedMessage.text}" 😄` };
+    }
   }
 
   callSendAPI(senderPsid, response);
@@ -66,9 +76,51 @@ function handlePostback(senderPsid, postback) {
   console.log("🎯 Triggered postback payload:", payload);
 
   if (payload === "GET_STARTED_PAYLOAD") {
-    const response = { text: "👋 Hello! Welcome to our chatbot!" };
-    callSendAPI(senderPsid, response);
+    // Welcome message
+    const welcome = { text: "👋 Hello! Welcome to our chatbot!" };
+    callSendAPI(senderPsid, welcome);
+
+    // Send buttons after welcome
+    sendMainMenu(senderPsid);
+  } else if (payload === "PRODUCTS_PAYLOAD") {
+    callSendAPI(senderPsid, { text: "🛍️ Our products are listed here!" });
+  } else if (payload === "FAQS_PAYLOAD") {
+    callSendAPI(senderPsid, { text: "❓ Frequently Asked Questions:" });
+  } else if (payload === "CONTACT_PAYLOAD") {
+    callSendAPI(senderPsid, { text: "📞 Contact us at example@email.com" });
   }
+}
+
+// ===== SEND MAIN MENU BUTTONS =====
+function sendMainMenu(senderPsid) {
+  const response = {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "button",
+        text: "What would you like to do next?",
+        buttons: [
+          {
+            type: "postback",
+            title: "🛍️ Products",
+            payload: "PRODUCTS_PAYLOAD"
+          },
+          {
+            type: "postback",
+            title: "❓ FAQs",
+            payload: "FAQS_PAYLOAD"
+          },
+          {
+            type: "postback",
+            title: "📞 Contact",
+            payload: "CONTACT_PAYLOAD"
+          }
+        ]
+      }
+    }
+  };
+
+  callSendAPI(senderPsid, response);
 }
 
 // ===== SEND MESSAGE =====
