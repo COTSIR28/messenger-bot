@@ -116,7 +116,7 @@ function sendWelcomeCarousel(senderPsid) {
             {
               title: "📞 Contact Us",
               subtitle: "We’d love to hear from you!",
-              image_url: "https://picsum.photos/400/200?random=3",
+              image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/contact.png",
               buttons: [
                 {
                   type: "postback",
