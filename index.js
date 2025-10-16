@@ -104,7 +104,7 @@ function sendWelcomeCarousel(senderPsid) {
             {
               title: "❓ FAQs",
               subtitle: "Get answers to our most common questions.",
-              image_url: "https://picsum.photos/400/200?random=2",
+              image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/faqs.png",
               buttons: [
                 {
                   type: "postback",
