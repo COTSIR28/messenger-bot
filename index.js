@@ -109,7 +109,7 @@ function setupGetStarted() {
     }
   }, (err, res, body) => {
     if (!err) {
-      console.log("✅ 'Get Started' and greeting message set!");
+      console.log("✅ 'Get Started' button set successfully!");
     } else {
       console.error("❌ Error setting 'Get Started':", err);
     }
