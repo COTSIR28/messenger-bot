@@ -131,19 +131,19 @@ function sendProductCarousel(senderPsid) {
           {
             title: "Alphabet Tracing Write & Wipe Book",
             subtitle: "₱199 — High quality item",
-            image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/Alphabet%20Tracing%20Write%20%26%20Wipe%20Book.jpg",
+            image_url: "https://github.com/COTSIR28/messenger-bot/raw/main/assets/images/Alphabet%20Tracing%20Write%20%26%20Wipe%20Book.jpg",
 
           },
           {
             title: "Wall Calendar",
             subtitle: "₱99 — Best seller",
-            image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/wall%20calendar.jpg",
+            image_url: "https://github.com/COTSIR28/messenger-bot/raw/main/assets/images/wall%20calendar.jpg",
 
           },
           {
             title: "Notepad Binder",
             subtitle: "₱150 — Premium quality",
-            image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/notepadbinder.jpg",
+            image_url: "https://github.com/COTSIR28/messenger-bot/raw/main/assets/images/notepadbinder.jpg",
 
 
           }
