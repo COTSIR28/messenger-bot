@@ -129,9 +129,9 @@ function sendProductCarousel(senderPsid) {
         template_type: "generic",
         elements: [
           {
-            title: "Product A",
-            subtitle: "₱499 — High quality item",
-            image_url: "https://placekitten.com/300/200",
+            title: "Alphabet Tracing Write & Wipe Book",
+            subtitle: "₱199 — High quality item",
+            image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/Alphabet%20Tracing%20Write%20%26%20Wipe%20Book.jpg",
             buttons: [
               {
                 type: "web_url",
@@ -141,9 +141,9 @@ function sendProductCarousel(senderPsid) {
             ]
           },
           {
-            title: "Product B",
-            subtitle: "₱799 — Best seller",
-            image_url: "https://placekitten.com/301/200",
+            title: "Wall Calendar",
+            subtitle: "₱99 — Best seller",
+            image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/wall%20calendar.jpg",
             buttons: [
               {
                 type: "web_url",
@@ -153,9 +153,9 @@ function sendProductCarousel(senderPsid) {
             ]
           },
           {
-            title: "Product C",
-            subtitle: "₱999 — Premium quality",
-            image_url: "https://placekitten.com/302/200",
+            title: "Notepad Binder",
+            subtitle: "₱150 — Premium quality",
+            image_url: "https://github.com/COTSIR28/messenger-bot/blob/main/assets/images/notepadbinder.jpg",
             buttons: [
               {
                 type: "web_url",
