@@ -57,7 +57,8 @@ function handleMessage(senderPsid, receivedMessage) {
     const text = receivedMessage.text.toLowerCase();
 
     if (text.includes("products")) {
-      response = { text: "🛍️ We offer various products! (You can list them here.)" };
+      sendProductCarousel(senderPsid);
+      return;
     } else if (text.includes("faqs")) {
       response = { text: "❓ Here are some frequently asked questions..." };
     } else if (text.includes("contact")) {
@@ -76,14 +77,11 @@ function handlePostback(senderPsid, postback) {
   console.log("🎯 Triggered postback payload:", payload);
 
   if (payload === "GET_STARTED_PAYLOAD") {
-    // Welcome message
     const welcome = { text: "👋 Hello! Welcome to our chatbot!" };
     callSendAPI(senderPsid, welcome);
-
-    // Send buttons after welcome
     sendMainMenu(senderPsid);
   } else if (payload === "PRODUCTS_PAYLOAD") {
-    callSendAPI(senderPsid, { text: "🛍️ Our products are listed here!" });
+    sendProductCarousel(senderPsid);
   } else if (payload === "FAQS_PAYLOAD") {
     callSendAPI(senderPsid, { text: "❓ Frequently Asked Questions:" });
   } else if (payload === "CONTACT_PAYLOAD") {
@@ -91,7 +89,7 @@ function handlePostback(senderPsid, postback) {
   }
 }
 
-// ===== SEND MAIN MENU BUTTONS =====
+// ===== MAIN MENU BUTTONS =====
 function sendMainMenu(senderPsid) {
   const response = {
     attachment: {
@@ -114,6 +112,57 @@ function sendMainMenu(senderPsid) {
             type: "postback",
             title: "📞 Contact",
             payload: "CONTACT_PAYLOAD"
+          }
+        ]
+      }
+    }
+  };
+  callSendAPI(senderPsid, response);
+}
+
+// ===== PRODUCT CAROUSEL =====
+function sendProductCarousel(senderPsid) {
+  const response = {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "generic",
+        elements: [
+          {
+            title: "Product A",
+            subtitle: "₱499 — High quality item",
+            image_url: "https://placekitten.com/300/200",
+            buttons: [
+              {
+                type: "web_url",
+                url: "https://yourshoplink.com/productA",
+                title: "View Product"
+              }
+            ]
+          },
+          {
+            title: "Product B",
+            subtitle: "₱799 — Best seller",
+            image_url: "https://placekitten.com/301/200",
+            buttons: [
+              {
+                type: "web_url",
+                url: "https://yourshoplink.com/productB",
+                title: "View Product"
+              }
+            ]
+          },
+          {
+            title: "Product C",
+            subtitle: "₱999 — Premium quality",
+            image_url: "https://placekitten.com/302/200",
+            buttons: [
+              {
+                type: "web_url",
+                url: "https://yourshoplink.com/productC",
+                title: "View Product"
+              }
+            ]
           }
         ]
       }
@@ -171,5 +220,5 @@ function setupGetStarted() {
 // ===== START SERVER =====
 app.listen(process.env.PORT || 1337, () => {
   console.log("🚀 Webhook server is running on port 1337");
-  setupGetStarted(); // activate Get Started button on startup
+  setupGetStarted();
 });
